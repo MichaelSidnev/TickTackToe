@@ -6,7 +6,7 @@ public class TickTackToe {
     static String spSymbol;
     static char[][] board = new char[3][3];
     static boolean exit = false;
-
+    
     public static void symbolChooser() {
         System.out.print("Enter first player symbol: ");
         Scanner sc = new Scanner(System.in);
@@ -78,11 +78,12 @@ public class TickTackToe {
                 placeChooser();
             }
             board[secondInt][firstInt] = symbol;
-            winnerCheck();
 
-            if (exit){
-                break;
+            if (CheckForWin()) {
+                System.out.println("Player " + symbol + " win!");
+                System.exit(0);
             }
+
 
             symbol = (symbol == spSymbol.charAt(0)) ? fpSymbol.charAt(0) : spSymbol.charAt(0);
             gameStarter();
@@ -102,28 +103,21 @@ public class TickTackToe {
         return 0;
     }
 
-    public static String winnerCheck() {
+    public static boolean CheckForWin() {
 
         for (int a = 0; a < 3; a++) {
             if (board[a][0] == symbol && board[a][1] == symbol && board[a][2] == symbol) {
-                System.out.println("Player " + symbol + " win!");
-                exit = true;
+                return true;
             }
         }
         for (int b = 0; b < 3; b++) {
             if (board[0][b] == symbol && board[1][b] == symbol && board[2][b] == symbol) {
-                System.out.println("Player " + symbol + " win!");
-                exit = true;
+                return true;
             }
         }
         if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) {
-            System.out.println("Player " + symbol + " win!");
-            exit = true;
+            return true;
         }
-        if (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol) {
-            System.out.println("Player " + symbol + " win!");
-            exit = true;
-        }
-        return "Player " + symbol + " win!";
+        return board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol;
     }
 }
