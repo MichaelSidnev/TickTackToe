@@ -2,10 +2,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class TickTackToeBotVersion {
-    static char symbol;
     static String fpSymbol;
     static String spSymbol = "0";
-    static char[][] board = new char[3][3];
     static boolean exit = false;
 
     public static void chooseASimbol() {
@@ -24,18 +22,7 @@ public class TickTackToeBotVersion {
         if (fpSymbol.equals("0") || fpSymbol.equalsIgnoreCase("O")) {
             spSymbol = "X";
         }
-        symbol = fpSymbol.charAt(0);
-    }
-
-    public static void displayTheBoard() {
-
-        int a = 0;
-        System.out.println("  abc");
-        for (char[] board : board) {
-            System.out.print(a + " ");
-            a++;
-            System.out.println(board);
-        }
+        BoardAndCheckWin.symbol = fpSymbol.charAt(0);
     }
 
     public static void enterAndCheckCoordinates() {
@@ -43,7 +30,7 @@ public class TickTackToeBotVersion {
             Scanner scanner = new Scanner(System.in);
             String firstCharCoordinate;
             String secondCoordinate;
-            System.out.println("Player " + symbol + "! It's your turn!");
+            System.out.println("Player " + BoardAndCheckWin.symbol + "! It's your turn!");
             System.out.print("Enter your first game coordinates: ");
             while (true) {
                 firstCharCoordinate = scanner.nextLine();
@@ -64,29 +51,29 @@ public class TickTackToeBotVersion {
                 }
             }
 
-            int firstInt = convertStringToNumber(firstCharCoordinate);
+            int firstInt = BoardAndCheckWin.convertStringToNumber(firstCharCoordinate);
             int secondInt = Integer.parseInt(secondCoordinate);
-            if (Character.toString(board[secondInt][firstInt]).equals(fpSymbol) || Character.toString(board[secondInt][firstInt]).equals(spSymbol)) {
+            if (Character.toString(BoardAndCheckWin.board[secondInt][firstInt]).equals(fpSymbol) || Character.toString(BoardAndCheckWin.board[secondInt][firstInt]).equals(spSymbol)) {
                 System.out.println("The Place has already taken");
             } else {
-                board[secondInt][firstInt] = symbol;
+                BoardAndCheckWin.board[secondInt][firstInt] = BoardAndCheckWin.symbol;
 
-                if (checkWinCombination()) {
-                    System.out.println("Player " + symbol + " win!");
-                    displayTheBoard();
+                if (BoardAndCheckWin.checkWinCombination()) {
+                    System.out.println("Player " + BoardAndCheckWin.symbol + " win!");
+                    BoardAndCheckWin.displayTheBoard();
                     break;
                 }
 
                 botPlays();
-                symbol = spSymbol.charAt(0);
-                if (checkWinCombination()) {
-                    System.out.println("Player " + symbol + " win!");
-                    displayTheBoard();
+                BoardAndCheckWin.symbol = spSymbol.charAt(0);
+                if (BoardAndCheckWin.checkWinCombination()) {
+                    System.out.println("Player " + BoardAndCheckWin.symbol + " win!");
+                    BoardAndCheckWin.displayTheBoard();
                     break;
                 }
-                symbol = fpSymbol.charAt(0);
+                BoardAndCheckWin.symbol = fpSymbol.charAt(0);
 
-                displayTheBoard();
+                BoardAndCheckWin.displayTheBoard();
             }
         }
     }
@@ -97,42 +84,12 @@ public class TickTackToeBotVersion {
             int firstRandom = ran.nextInt(3);
             int secondRandom = ran.nextInt(3);
 
-            if (!Character.toString(board[firstRandom][secondRandom]).equals(fpSymbol) && !Character.toString(board[firstRandom][secondRandom]).equals(spSymbol)) {
-                board[firstRandom][secondRandom] = spSymbol.charAt(0);
+            if (!Character.toString(BoardAndCheckWin.board[firstRandom][secondRandom]).equals(fpSymbol) && !Character.toString(BoardAndCheckWin.board[firstRandom][secondRandom]).equals(spSymbol)) {
+                BoardAndCheckWin.board[firstRandom][secondRandom] = spSymbol.charAt(0);
                 break;
             }
         }
     }
 
-    public static int convertStringToNumber(String letter) {
-        if (letter.equalsIgnoreCase("a")) {
-            return 0;
-        }
-        if (letter.equalsIgnoreCase("b")) {
-            return 1;
-        }
-        if (letter.equalsIgnoreCase("c")) {
-            return 2;
-        }
-        return 0;
-    }
-
-    public static boolean checkWinCombination() {
-
-        for (int i = 0; i < 3; i++) {
-            if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) {
-                return true;
-            }
-        }
-        for (int j = 0; j < 3; j++) {
-            if (board[0][j] == symbol && board[1][j] == symbol && board[2][j] == symbol) {
-                return true;
-            }
-        }
-        if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) {
-            return true;
-        }
-        return board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol;
-    }
 }
 
