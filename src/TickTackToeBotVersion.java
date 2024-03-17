@@ -1,16 +1,15 @@
 import java.util.Scanner;
 
-public class TickTackToe {
+public class TickTackToeBotVersion {
     static char symbol;
     static String fpSymbol;
-    static String spSymbol;
+    static String spSymbol = "0";
     static char[][] board = new char[3][3];
     static boolean exit = false;
-    
-    public static void symbolChooser() {
-        System.out.print("Enter first player symbol: ");
+
+    public static void chooseASimbol() {
+        System.out.print("Enter your symbol: ");
         Scanner sc = new Scanner(System.in);
-        String emptyCatcher;
         while (true) {
             fpSymbol = sc.nextLine();
             if (fpSymbol.isEmpty()) {
@@ -21,11 +20,9 @@ public class TickTackToe {
         }
         fpSymbol = fpSymbol.substring(0, 1);
 
-        System.out.print("Enter second player symbol: ");
         while (true) {
-            spSymbol = sc.nextLine();
-            if (spSymbol.isEmpty() || spSymbol.substring(0, 1).equals(fpSymbol)) {
-                System.out.print("First symbol is wrong or already in use.Try again: ");
+            if (spSymbol.equals("0") && spSymbol.equalsIgnoreCase("O")) {
+                spSymbol = "X";
             } else {
                 break;
             }
@@ -33,7 +30,7 @@ public class TickTackToe {
         symbol = fpSymbol.charAt(0);
     }
 
-    public static void gameStarter() {
+    public static void displayTheBoard() {
 
         int a = 0;
         System.out.println("  abc");
@@ -44,12 +41,11 @@ public class TickTackToe {
         }
     }
 
-    public static void placeChooser() {
+    public static void enterAndCheckCoordinates() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
             String firstCharCoordinate;
             String secondCoordinate;
-            String emptyCatcher;
             System.out.println("Player " + symbol + "! It's your turn!");
             System.out.print("Enter your first game coordinates: ");
             while (true) {
@@ -71,26 +67,26 @@ public class TickTackToe {
                 }
             }
 
-            int firstInt = convert(firstCharCoordinate);
+            int firstInt = convertStringToNumber(firstCharCoordinate);
             int secondInt = Integer.parseInt(secondCoordinate);
-            if (Character.isAlphabetic(board[secondInt][firstInt])) {
-                System.out.print("The Place has already taken");
-                placeChooser();
+            if (Character.toString(board[secondInt][firstInt]).equals(fpSymbol) || Character.toString(board[secondInt][firstInt]).equals(spSymbol)) {
+                System.out.println("The Place has already taken");
+            } else {
+                board[secondInt][firstInt] = symbol;
+
+                if (checkWinCombination()) {
+                    System.out.println("Player " + symbol + " win!");
+                    displayTheBoard();
+                    break;
+                }
+
+                symbol = (symbol == spSymbol.charAt(0)) ? fpSymbol.charAt(0) : spSymbol.charAt(0);
+                displayTheBoard();
             }
-            board[secondInt][firstInt] = symbol;
-
-            if (CheckForWin()) {
-                System.out.println("Player " + symbol + " win!");
-                System.exit(0);
-            }
-
-
-            symbol = (symbol == spSymbol.charAt(0)) ? fpSymbol.charAt(0) : spSymbol.charAt(0);
-            gameStarter();
         }
     }
 
-    public static int convert(String letter) {
+    public static int convertStringToNumber(String letter) {
         if (letter.equalsIgnoreCase("a")) {
             return 0;
         }
@@ -103,7 +99,7 @@ public class TickTackToe {
         return 0;
     }
 
-    public static boolean CheckForWin() {
+    public static boolean checkWinCombination() {
 
         for (int a = 0; a < 3; a++) {
             if (board[a][0] == symbol && board[a][1] == symbol && board[a][2] == symbol) {
@@ -121,3 +117,4 @@ public class TickTackToe {
         return board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol;
     }
 }
+
