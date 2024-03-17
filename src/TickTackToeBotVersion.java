@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class TickTackToeBotVersion {
@@ -20,12 +21,8 @@ public class TickTackToeBotVersion {
         }
         fpSymbol = fpSymbol.substring(0, 1);
 
-        while (true) {
-            if (spSymbol.equals("0") && spSymbol.equalsIgnoreCase("O")) {
-                spSymbol = "X";
-            } else {
-                break;
-            }
+        if (fpSymbol.equals("0") || fpSymbol.equalsIgnoreCase("O")) {
+            spSymbol = "X";
         }
         symbol = fpSymbol.charAt(0);
     }
@@ -80,8 +77,29 @@ public class TickTackToeBotVersion {
                     break;
                 }
 
-                symbol = (symbol == spSymbol.charAt(0)) ? fpSymbol.charAt(0) : spSymbol.charAt(0);
+                botPlays();
+                symbol = spSymbol.charAt(0);
+                if (checkWinCombination()) {
+                    System.out.println("Player " + symbol + " win!");
+                    displayTheBoard();
+                    break;
+                }
+                symbol = fpSymbol.charAt(0);
+
                 displayTheBoard();
+            }
+        }
+    }
+
+    public static void botPlays() {
+        Random ran = new Random();
+        while (true) {
+            int firstRandom = ran.nextInt(3);
+            int secondRandom = ran.nextInt(3);
+
+            if (!Character.toString(board[firstRandom][secondRandom]).equals(fpSymbol) && !Character.toString(board[firstRandom][secondRandom]).equals(spSymbol)) {
+                board[firstRandom][secondRandom] = spSymbol.charAt(0);
+                break;
             }
         }
     }
@@ -101,13 +119,13 @@ public class TickTackToeBotVersion {
 
     public static boolean checkWinCombination() {
 
-        for (int a = 0; a < 3; a++) {
-            if (board[a][0] == symbol && board[a][1] == symbol && board[a][2] == symbol) {
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) {
                 return true;
             }
         }
-        for (int b = 0; b < 3; b++) {
-            if (board[0][b] == symbol && board[1][b] == symbol && board[2][b] == symbol) {
+        for (int j = 0; j < 3; j++) {
+            if (board[0][j] == symbol && board[1][j] == symbol && board[2][j] == symbol) {
                 return true;
             }
         }

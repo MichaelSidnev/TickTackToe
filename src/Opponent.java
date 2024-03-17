@@ -7,14 +7,15 @@ public class Opponent {
         String choseOfOpponent;
         choseOfOpponent = sc.nextLine();
         if (choseOfOpponent.equalsIgnoreCase("Y")) {
+            System.out.println("Bot mod enabled.");
             TickTackToeBotVersion.chooseASimbol();
             TickTackToeBotVersion.displayTheBoard();
+            TickTackToeBotVersion.enterAndCheckCoordinates();
 
         } else {
             TickTackToeHumanVersion.chooseASimbol();
             TickTackToeHumanVersion.displayTheBoard();
             TickTackToeHumanVersion.enterAndCheckCoordinates();
-            TickTackToeHumanVersion.checkWinCombination();
         }
     }
 }
